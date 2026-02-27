@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://metal-lviv-wcg4.onrender.com/sitemap.xml
