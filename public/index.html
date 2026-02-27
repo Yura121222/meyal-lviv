@@ -2,249 +2,55 @@
 <html lang="uk">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Прийом металобрухту Львів — МЕТАЛ-ЛЬВІВ</title>
-    <meta name="description"
-        content="Прийом металобрухту у Львові. Кілька прийомок по місту. Контакти, карта, зворотний зв’язок." />
-    <link rel="preconnect" href="https://unpkg.com">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <style>
-        body {
-            font-family: system-ui, Segoe UI, Arial;
-            margin: 0;
-            color: #111;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Прийом металобрухту Львів — МЕТАЛ-ЛЬВІВ</title>
 
-        header {
-            padding: 28px 18px;
-            background: #0b1220;
-            color: #fff;
-        }
-
-        .wrap {
-            max-width: 980px;
-            margin: 0 auto;
-        }
-
-        .hero {
-            display: grid;
-            gap: 14px;
-        }
-
-        .btn {
-            display: inline-block;
-            background: #22c55e;
-            color: #0b1220;
-            padding: 10px 14px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        main {
-            padding: 22px 18px;
-        }
-
-        .grid {
-            display: grid;
-            gap: 18px;
-        }
-
-        @media(min-width:900px) {
-            .grid {
-                grid-template-columns: 1.2fr .8fr;
-            }
-        }
-
-        #map {
-            height: 380px;
-            border-radius: 14px;
-            border: 1px solid #e5e7eb;
-        }
-
-        .card {
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            padding: 14px;
-        }
-
-        .muted {
-            color: #6b7280;
-            font-size: 14px;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            margin-top: 6px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            border: 0;
-            border-radius: 12px;
-            background: #0b1220;
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        ul {
-            margin: 8px 0 0 18px;
-        }
-
-        footer {
-            padding: 18px;
-            border-top: 1px solid #e5e7eb;
-            color: #6b7280;
-        }
-
-        .loc {
-            padding: 10px 0;
-            border-bottom: 1px dashed #e5e7eb;
-        }
-    </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-    <header>
-        <div class="wrap hero">
-            <h1 style="margin:0;">Прийом металобрухту у Львові</h1>
-            <div class="muted" style="color:#cbd5e1;">Кілька прийомок по місту • Готівка/безготівка • Вивіз за
-                домовленістю</div>
-            <div>
-                <a class="btn" href="#contact">Залишити заявку</a>
-                <a class="btn" style="background:#38bdf8;" href="#map-block">Показати на карті</a>
-            </div>
-        </div>
-    </header>
 
-    <main class="wrap">
-        <section class="grid">
-            <div class="card">
-                <h2 style="margin-top:0;">Наші прийомки</h2>
-                <div class="muted">Натисни на маркер на карті або вибери локацію зі списку.</div>
-
-                <div id="locations"></div>
-
-                <h3>Приймаємо</h3>
-                <ul>
-                    <li>Чорний метал</li>
-                    <li>Кольоровий метал (алюміній, мідь тощо)</li>
-                    <li>Акумулятори / інше — уточнюй по телефону</li>
-                </ul>
-                <div class="muted">Ціни змінюються — уточнюй перед приїздом.</div>
-            </div>
-
-            <div class="card" id="map-block">
-                <h2 style="margin-top:0;">Карта прийомок</h2>
-                <div id="map"></div>
-                <div class="muted" style="margin-top:8px;">Карта на базі OpenStreetMap.</div>
-            </div>
-        </section>
-
-        <section class="card" id="contact" style="margin-top:18px;">
-            <h2 style="margin-top:0;">Зворотний зв’язок</h2>
-            <div class="muted">Залиш номер — ми передзвонимо.</div>
-
-            <form id="contactForm">
-                <label>Ім’я
-                    <input name="name" placeholder="Ваше ім’я" required />
-                </label>
-                <label>Телефон
-                    <input name="phone" placeholder="+380..." required />
-                </label>
-                <label>Повідомлення (необов’язково)
-                    <textarea name="message" rows="4" placeholder="Наприклад: адреса/тип металу/вага"></textarea>
-                </label>
-                <button type="submit">Відправити</button>
-                <div id="status" class="muted" style="margin-top:8px;"></div>
-            </form>
-        </section>
-    </main>
-
-    <footer class="wrap">
-        © <span id="y"></span> МЕТАЛ-ЛЬВІВ • Всі права захищено
-    </footer>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        document.getElementById("y").textContent = new Date().getFullYear();
-
-        // ✅ ЗАМІНИ на свої реальні точки (lat/lng, адреса, телефон)
-        const points = [
-            { name: "Прийомка #1", address: "Львів, Гніздовського 1", phone: "+38(050)-176-46-79", lat: 49.83986, lng: 23.96691, hours: "Пн-Сб 9:00–18:00" },
-            { name: "Прийомка #2", address: "Львів, Авіаційна 7 ", phone: "+38(096)-298-30-72", lat: 49.813648, lng: 23.930202, hours: "Пн-Сб 9:00–18:00" }
-        ];
-
-        // list
-        const locEl = document.getElementById("locations");
-        locEl.innerHTML = points.map((p, i) => `
-    <div class="loc">
-      <b>${p.name}</b><br/>
-      <span class="muted">${p.address}</span><br/>
-      <a href="tel:${p.phone.replaceAll(' ', '')}" class="muted">${p.phone}</a> • <span class="muted">${p.hours}</span><br/>
-      <a href="#map-block" onclick="focusPoint(${i})">Показати на карті</a>
+<header>
+  <div class="wrap hero">
+    <h1>Прийом металобрухту у Львові</h1>
+    <div class="muted">Кілька прийомок по місту</div>
+    <div>
+      <a class="btn" href="#contact">Залишити заявку</a>
+      <a class="btn blue" href="#map-block">Показати на карті</a>
     </div>
-  `).join("");
+  </div>
+</header>
 
-        // map
-        const map = L.map('map');
+<main class="wrap">
+  <section class="grid">
+    <div class="card">
+      <h2>Наші прийомки</h2>
+      <div id="locations"></div>
+    </div>
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap'
-        }).addTo(map);
+    <div class="card" id="map-block">
+      <h2>Карта прийомок</h2>
+      <div id="map"></div>
+    </div>
+  </section>
 
-        // Додаємо маркери з твого масиву points
-        points.forEach(p => {
-            L.marker([p.lat, p.lng])
-                .addTo(map)
-                .bindPopup(`
-      <b>${p.name}</b><br>
-      ${p.address}<br>
-      <a href="tel:${p.phone}">${p.phone}</a><br>
-      ${p.hours}
-    `);
-        });
+  <section class="card" id="contact">
+    <h2>Зворотний зв’язок</h2>
 
-        // Автоматично визначаємо межі карти по всіх точках
-        const bounds = L.latLngBounds(
-            points.map(p => [p.lat, p.lng])
-        );
+    <form id="contactForm">
+      <input name="name" placeholder="Ім'я" required />
+      <input name="phone" placeholder="+380..." required />
+      <textarea name="message" rows="4"></textarea>
+      <button type="submit">Відправити</button>
+      <div id="status"></div>
+    </form>
+  </section>
+</main>
 
-        // Підганяємо карту під усі точки
-        map.fitBounds(bounds);
-
-        // form (поки просто показує "OK"; далі підключимо відправку)
-        const form = document.getElementById("contactForm");
-        const status = document.getElementById("status");
-        form.onsubmit = async (e) => {
-            e.preventDefault();
-            status.textContent = "Відправляю...";
-            const data = Object.fromEntries(new FormData(form).entries());
-
-            // Тимчасово: без бекенда
-            // Після додавання /api/contact — просто увімкнемо fetch
-            try {
-                const res = await fetch("/api/contact", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data),
-                });
-                if (!res.ok) throw new Error("bad status");
-                status.textContent = "Готово! Ми зв’яжемось з вами.";
-                form.reset();
-            } catch {
-                status.textContent = "Поки форма не підключена. Напиши/зателефонуй — або скажи, і я підключу відправку на email.";
-            }
-        };
-    </script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/js/main.js"></script>
 </body>
 
 </html>

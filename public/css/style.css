@@ -1,0 +1,40 @@
+body {
+  font-family: system-ui, Arial;
+  margin: 0;
+}
+
+header {
+  background: #0b1220;
+  color: white;
+  padding: 28px 18px;
+}
+
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.btn {
+  background: #22c55e;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.btn.blue {
+  background: #38bdf8;
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px;
+  margin-top: 18px;
+}
+
+#map {
+  height: 400px;
+  border-radius: 10px;
+}
