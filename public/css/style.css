@@ -160,3 +160,62 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+.pricing-wrap {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  background: #f4f6f8;
+}
+
+.pricing {
+  width: 50%;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.pricing h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.pricing ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pricing li {
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  background: #f9f9f9;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.pricing li:hover {
+  background: #e8f5e9;
+  transform: translateY(-3px);
+}
+
+/* Розділення назви і ціни */
+.pricing li span {
+  font-weight: 600;
+}
+@media (max-width: 900px) {
+  .pricing {
+    width: 80%;
+  }
+}
+
+@media (max-width: 600px) {
+  .pricing {
+    width: 95%;
+  }
+}
